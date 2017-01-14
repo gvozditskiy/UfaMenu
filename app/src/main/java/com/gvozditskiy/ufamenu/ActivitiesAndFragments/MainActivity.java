@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -113,6 +115,10 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            CategoriesFragment fragment = new CategoriesFragment();
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+//            ft.replace()
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
