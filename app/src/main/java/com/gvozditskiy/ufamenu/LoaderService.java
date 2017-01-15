@@ -2,6 +2,7 @@ package com.gvozditskiy.ufamenu;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Process;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -41,11 +42,14 @@ public class LoaderService extends IntentService {
 
     }
 
+
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         getHttpClient = new OkHttpClient.Builder().connectTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(1, TimeUnit.MINUTES)
                 .build();
+        Log.d("service",Thread.currentThread().getName());
+
         getDataFromRest();
     }
 
@@ -62,7 +66,6 @@ public class LoaderService extends IntentService {
         ufaApi.getData(KEY).enqueue(new Callback<YmlResponse>() {
             @Override
             public void onResponse(Call<YmlResponse> call, Response<YmlResponse> response) {
-                Log.d("response", "ответ получен ");
                 try {
                     TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Category.class);
                     TableUtils.clearTable(HelperFactory.getHelper().getConnectionSource(), Offer.class);
@@ -70,6 +73,7 @@ public class LoaderService extends IntentService {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
                 for (Category category: response.body().getShop().getCategories()) {
                     try {
                         HelperFactory.getHelper().getDaoCAtegory().create(category);
@@ -77,6 +81,7 @@ public class LoaderService extends IntentService {
                         e.printStackTrace();
                     }
                 }
+                // TODO: 15.01.2017 Разобраться в затупе (потеря фреймов на записи offers и params в таблицу) 
                 for (Offer offer: response.body().getShop().getOffers()) {
                     try {
                         HelperFactory.getHelper().getDaoOffer().create(offer);
@@ -96,12 +101,13 @@ public class LoaderService extends IntentService {
 
             @Override
             public void onFailure(Call<YmlResponse> call, Throwable t) {
-                Log.d("response", "ошибка: "+t.toString() );
                 LocalBroadcastManager.getInstance(getApplicationContext())
                         .sendBroadcast(createLocalIntent(Constants.STATUS_ERROR));
             }
         });
     }
+
+
 
     private Intent createLocalIntent(String status) {
         Intent localIntent = new Intent(Constants.BROADCAST_ACTION);

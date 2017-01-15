@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.gvozditskiy.ufamenu.Interfaces.OnCategoryClickListener;
 import com.gvozditskiy.ufamenu.Parser.Category;
 import com.gvozditskiy.ufamenu.R;
 
@@ -22,10 +23,12 @@ import java.util.List;
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CatVH> {
     List<Category> dataSet;
     Context context;
+    OnCategoryClickListener onCategoryClickListener;
 
-    public CategoriesAdapter(Context context, List<Category> dataSet) {
+    public CategoriesAdapter(Context context, List<Category> dataSet, OnCategoryClickListener onCategoryClickListener) {
         this.context = context;
         this.dataSet = dataSet;
+        this.onCategoryClickListener = onCategoryClickListener;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     }
 
     @Override
-    public void onBindViewHolder(CatVH holder, int position) {
+    public void onBindViewHolder(CatVH holder, final int position) {
         holder.caption.setText(dataSet.get(position).getValue());
 //                <category id = "25" > Патимейкер </category >
 //                <category id = "1" > Пицца </category >
@@ -94,6 +97,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
                 break;
         }
         Glide.with(context).load("").placeholder(drawableId).into(holder.image);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCategoryClickListener.onCategoryClicked(dataSet.get(position).getId());
+            }
+        });
     }
 
     @Override
@@ -113,6 +122,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.card_category_image);
             caption = (TextView) itemView.findViewById(R.id.card_category_caption);
+
         }
     }
 }

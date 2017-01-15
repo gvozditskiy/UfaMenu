@@ -46,7 +46,7 @@ public class Offer {
     @Element(name = "picture", required = false)
     private String pictureUrl;
 
-    @DatabaseField (columnName = CATEGORY_ID_COLUMN)
+    @DatabaseField(columnName = CATEGORY_ID_COLUMN)
     @Element
     private String categoryId;
 
@@ -54,18 +54,42 @@ public class Offer {
     @Element(required = false)
     private String description;
 
+    private String weight;
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
 
     @ElementList(inline = true, required = false)
     private ArrayList<Param> params;
 
-public List<Param> getParams() {
-    return params;
-}
+    public List<Param> getParams() {
+        return params;
+    }
 
-public String getId() {
-    return id;
-}
+    public String getId() {
+        return id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
 //    public static String getCategoryId() {
 //        return categoryId;

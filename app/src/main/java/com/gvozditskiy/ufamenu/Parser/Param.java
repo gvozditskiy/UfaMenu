@@ -16,9 +16,15 @@ import java.lang.ref.SoftReference;
 @DatabaseTable(tableName = "params")
 @Root
 public class Param {
-    @DatabaseField (id = true)
+    public static final String OFFER_ID_COLUMN = "offerId";
+    public static final String TYPE_COLUMN = "type";
+
+    @DatabaseField(generatedId = true)
+    private Integer id;
+
+    @DatabaseField
     @Text
-    String value;
+    private String value;
 
     @DatabaseField
     @Attribute(name = "name")
@@ -36,9 +42,8 @@ public class Param {
     }
 
 
-
     public void setOfferId(String id) {
-        offerId=id;
+        offerId = id;
     }
 
     public String getOfferId() {

@@ -14,12 +14,13 @@ import org.simpleframework.xml.Text;
 @DatabaseTable(tableName = "categories")
 @Root
 public class Category {
-    public static final String ID_COLUMN_NAME = "cat_Id";
+    public static final String ID_CATEGORY_COLUMN_NAME = "cat_Id";
+    public static final String ID_COLUMN_NAME = "offer_Id";
 
     public Category() {
     }
 
-    @DatabaseField(id = true, columnName = ID_COLUMN_NAME)
+    @DatabaseField(id = true, columnName = ID_CATEGORY_COLUMN_NAME)
     @Attribute
     String id;
 

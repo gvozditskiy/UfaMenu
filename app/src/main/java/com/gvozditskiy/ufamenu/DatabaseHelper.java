@@ -25,15 +25,15 @@ import java.util.List;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final String DATABASE_NAME = "ufamenu.db";
-    private static final int DATABSE_VERSION=1;
+    private static final int DATABSE_VERSION = 1;
 
-    private DaoCategory daoCategory=null;
-    private DaoOffer daoOffer=null;
-    private DaoParam daoParam=null;
+    private DaoCategory daoCategory = null;
+    private DaoOffer daoOffer = null;
+    private DaoParam daoParam = null;
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABSE_VERSION);
+        super(context, DATABASE_NAME, null, DATABSE_VERSION, R.raw.ormlite_config);
     }
 
     @Override
@@ -56,26 +56,27 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     ////////////Синглеты для DAO
     public DaoCategory getDaoCAtegory() throws SQLException {
-        if (daoCategory==null) {
-            daoCategory=new DaoCategory(getConnectionSource(), Category.class);
+        if (daoCategory == null) {
+            daoCategory = new DaoCategory(getConnectionSource(), Category.class);
         }
         return daoCategory;
     }
 
     public DaoOffer getDaoOffer() throws SQLException {
-        if (daoOffer==null) {
-            daoOffer=new DaoOffer(getConnectionSource(), Offer.class);
+        if (daoOffer == null) {
+            daoOffer = new DaoOffer(getConnectionSource(), Offer.class);
         }
         return daoOffer;
     }
 
     public DaoParam getDaoParam() throws SQLException {
-        if (daoParam==null) {
-            daoParam=new DaoParam(getConnectionSource(), Param.class);
+        if (daoParam == null) {
+            daoParam = new DaoParam(getConnectionSource(), Param.class);
         }
         return daoParam;
     }
-/////////////////////////////////
+
+    /////////////////////////////////
     public class DaoCategory extends BaseDaoImpl<Category, Integer> {
 
         protected DaoCategory(ConnectionSource connectionSource, Class<Category> dataClass) throws SQLException {
@@ -103,12 +104,27 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             PreparedQuery<Offer> preparedQuery = queryBuilder.prepare();
             return query(preparedQuery);
         }
+
+        public List<Offer> getOfferById(String id) throws SQLException {
+            QueryBuilder<Offer, Integer> queryBuilder = queryBuilder();
+            queryBuilder.where().eq(Offer.ID_COLUMN, id);
+            PreparedQuery<Offer> preparedQuery = queryBuilder.prepare();
+            return query(preparedQuery);
+        }
     }
+
     public class DaoParam extends BaseDaoImpl<Param, Integer> {
 
 
         protected DaoParam(ConnectionSource connectionSource, Class<Param> dataClass) throws SQLException {
             super(connectionSource, dataClass);
+        }
+
+        public List<Param> getParamForOffer(String offerId, String paramType) throws SQLException {
+            QueryBuilder<Param, Integer> queryBuilder = queryBuilder();
+            queryBuilder.where().eq(Param.OFFER_ID_COLUMN, offerId).and().eq(Param.TYPE_COLUMN, paramType);
+            PreparedQuery<Param> preparedQuery = queryBuilder.prepare();
+            return query(preparedQuery);
         }
     }
 

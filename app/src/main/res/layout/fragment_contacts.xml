@@ -1,0 +1,37 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frag_contacts_scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context="com.gvozditskiy.ufamenu.ActivitiesAndFragments.ContactsFragment">
+
+        <!--/Общий контейнер для карты и TouchableWrapper//-->
+        <FrameLayout
+            android:id="@+id/frag_contacts_container"
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+            <!--//Контейнер для карты//-->
+            <FrameLayout
+                android:id="@+id/frag_contacts_map_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </FrameLayout>
+        </FrameLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/longtext" />
+
+    </LinearLayout>
+</ScrollView>
